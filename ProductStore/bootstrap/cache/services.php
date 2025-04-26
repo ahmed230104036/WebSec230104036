@@ -239,3 +239,97 @@
     ),
   ),
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 'migrator' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+//     'migration.repository' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+//     'migration.creator' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+//     'Illuminate\\Database\\Console\\Migrations\\MigrateCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+//     'Illuminate\\Database\\Console\\Migrations\\FreshCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+//     'Illuminate\\Database\\Console\\Migrations\\InstallCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+//     'Illuminate\\Database\\Console\\Migrations\\RefreshCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+//     'Illuminate\\Database\\Console\\Migrations\\ResetCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+//     'Illuminate\\Database\\Console\\Migrations\\RollbackCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+//     'Illuminate\\Database\\Console\\Migrations\\StatusCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+//     'Illuminate\\Database\\Console\\Migrations\\MigrateMakeCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+//     'composer' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+//     'hash' => 'Illuminate\\Hashing\\HashServiceProvider',
+//     'hash.driver' => 'Illuminate\\Hashing\\HashServiceProvider',
+//     'mail.manager' => 'Illuminate\\Mail\\MailServiceProvider',
+//     'mailer' => 'Illuminate\\Mail\\MailServiceProvider',
+//     'Illuminate\\Mail\\Markdown' => 'Illuminate\\Mail\\MailServiceProvider',
+//     'Illuminate\\Contracts\\Pipeline\\Hub' => 'Illuminate\\Pipeline\\PipelineServiceProvider',
+//     'queue' => 'Illuminate\\Queue\\QueueServiceProvider',
+//     'queue.connection' => 'Illuminate\\Queue\\QueueServiceProvider',
+//     'queue.failer' => 'Illuminate\\Queue\\QueueServiceProvider',
+//     'queue.listener' => 'Illuminate\\Queue\\QueueServiceProvider',
+//     'queue.worker' => 'Illuminate\\Queue\\QueueServiceProvider',
+//     'redis' => 'Illuminate\\Redis\\RedisServiceProvider',
+//     'redis.connection' => 'Illuminate\\Redis\\RedisServiceProvider',
+//     'auth.password' => 'Illuminate\\Auth\\Passwords\\PasswordResetServiceProvider',
+//     'auth.password.broker' => 'Illuminate\\Auth\\Passwords\\PasswordResetServiceProvider',
+//     'translator' => 'Illuminate\\Translation\\TranslationServiceProvider',
+//     'translation.loader' => 'Illuminate\\Translation\\TranslationServiceProvider',
+//     'validator' => 'Illuminate\\Validation\\ValidationServiceProvider',
+//     'validation.presence' => 'Illuminate\\Validation\\ValidationServiceProvider',
+//     'Laravel\\Sail\\Console\\InstallCommand' => 'Laravel\\Sail\\SailServiceProvider',
+//     'Laravel\\Sail\\Console\\PublishCommand' => 'Laravel\\Sail\\SailServiceProvider',
+//     'command.tinker' => 'Laravel\\Tinker\\TinkerServiceProvider',
+//   ),
+//   'when' => 
+//   array (
+//     'Illuminate\\Broadcasting\\BroadcastServiceProvider' => 
+//     array (
+//     ),
+//     'Illuminate\\Bus\\BusServiceProvider' => 
+//     array (
+//     ),
+//     'Illuminate\\Cache\\CacheServiceProvider' => 
+//     array (
+//     ),
+//     'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider' => 
+//     array (
+//     ),
+//     'Illuminate\\Hashing\\HashServiceProvider' => 
+//     array (
+//     ),
+//     'Illuminate\\Mail\\MailServiceProvider' => 
+//     array (
+//     ),
+//     'Illuminate\\Pipeline\\PipelineServiceProvider' => 
+//     array (
+//     ),
+//     'Illuminate\\Queue\\QueueServiceProvider' => 
+//     array (
+//     ),
+//     'Illuminate\\Redis\\RedisServiceProvider' => 
+//     array (
+//     ),
+//     'Illuminate\\Auth\\Passwords\\PasswordResetServiceProvider' => 
+//     array (
+//     ),
+//     'Illuminate\\Translation\\TranslationServiceProvider' => 
+//     array (
+//     ),
+//     'Illuminate\\Validation\\ValidationServiceProvider' => 
+//     array (
+//     ),
+//     'Laravel\\Sail\\SailServiceProvider' => 
+//     array (
+//     ),
+//     'Laravel\\Tinker\\TinkerServiceProvider' => 
+//     array (
+//     ),
+//   ),
+// );
