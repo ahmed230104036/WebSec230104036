@@ -23,6 +23,15 @@ class AuthController extends Controller
             'role' => 'required|in:User,Employee',
         ]);
 
+    //     public function register(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|email|unique:users',
+    //         'password' => 'required|min:6|confirmed',
+    //         'role' => 'required|in:User,Employee',
+    //     ]);
+
         User::create([
             'name' => $request->name,
             'email' => $request->email,

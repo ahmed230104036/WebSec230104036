@@ -71,3 +71,41 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- // public function register(Request $request)
+//     {
+//         $request->validate([
+//             'name' => 'required|string|max:255',
+//             'email' => 'required|email|unique:users',
+//             'password' => 'required|min:6|confirmed',
+//             'role' => 'required|in:User,Employee',
+//         ]); -->

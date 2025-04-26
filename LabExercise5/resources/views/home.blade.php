@@ -23,3 +23,39 @@
     @endauth
 </div>
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- // public function register(Request $request)
+//     {
+//         $request->validate([
+//             'name' => 'required|string|max:255',
+//             'email' => 'required|email|unique:users',
+//             'password' => 'required|min:6|confirmed',
+//             'role' => 'required|in:User,Employee',
+//         ]); -->

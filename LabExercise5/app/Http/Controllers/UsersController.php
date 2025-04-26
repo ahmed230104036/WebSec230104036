@@ -137,3 +137,32 @@ public function destroy(User $user)
     return redirect()->route('users.index')->with('success', 'User deleted successfully.');
 }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// public function register(Request $request)
+//     {
+//         $request->validate([
+//             'name' => 'required|string|max:255',
+//             'email' => 'required|email|unique:users',
+//             'password' => 'required|min:6|confirmed',
+//             'role' => 'required|in:User,Employee',
+//         ]);
