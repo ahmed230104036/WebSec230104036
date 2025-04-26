@@ -34,3 +34,48 @@ class UserController extends Controller
 }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// public function showChangePasswordForm()
+// {
+//     return view('users.change_password');
+// }
+
+// }

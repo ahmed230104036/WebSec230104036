@@ -64,3 +64,46 @@ class ForgotPasswordController extends Controller
         return $response->successful();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// namespace App\Http\Controllers\Auth;
+
+// use App\Http\Controllers\Controller;
+// use Illuminate\Http\Request;
+// use App\Models\User;
+// use Illuminate\Support\Facades\Hash;
+// use Illuminate\Support\Facades\Mail;
+// use Illuminate\Support\Str;
+// use Illuminate\Support\Facades\Http;
+
+// class ForgotPasswordController extends Controller

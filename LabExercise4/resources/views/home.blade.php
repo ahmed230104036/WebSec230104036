@@ -6,3 +6,27 @@
     <p>This is the homepage.</p>
 </div>
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -160,3 +160,66 @@ public function updatePassword(Request $request) {
 
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// public function doRegister(Request $request) {
+//     $request->validate([
+//         'name' => 'required|string|min:3',
+//         'email' => 'required|email|unique:users',
+//         'password' => 'required|confirmed|min:6',
+//         'security_question' => 'required|string',
+//         'security_answer' => 'required|string|min:3',
+//     ]);
+
+//     $user = new User();
+//     $user->name = $request->name;
+//     $user->email = $request->email;
+//     $user->password = bcrypt($request->password);
+//     $user->security_question = $request->security_question;
+//     $user->security_answer = bcrypt($request->security_answer);
+//     $user->admin = 0;
+//     $user->save();
