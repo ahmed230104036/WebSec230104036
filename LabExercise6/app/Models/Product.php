@@ -14,3 +14,17 @@ class Product extends Model  {
         'photo'
     ];
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

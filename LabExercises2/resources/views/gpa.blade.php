@@ -64,3 +64,16 @@ function calculateGPA() {
 }
 </script>
 @endsection
+<!-- <option value="4.3">A+ (4.3)</option>
+                        <option value="4.0">A (4.0)</option>
+                        <option value="3.7">A- (3.7)</option>
+                        <option value="3.3">B+ (3.3)</option>
+                        <option value="3.0">B (3.0)</option>
+                        <option value="2.7">B- (2.7)</option>
+                        <option value="2.3">C+ (2.3)</option>
+                        <option value="2.0">C (2.0)</option>
+                        <option value="1.7">C- (1.7)</option>
+                        <option value="1.3">D+ (1.3)</option>
+                        <option value="1.0">D (1.0)</option>
+                        <option value="0">F (0.0)</option>
+                    </select> -->
