@@ -14,7 +14,9 @@ class UsersController extends Controller {
     public function register() {
         return view('users.register');
     }
-
+    // public function register() {
+    //     return view('users.register');
+    // }
     public function doRegister(Request $request) {
         $request->validate([
             'name' => 'required|string|min:3',
