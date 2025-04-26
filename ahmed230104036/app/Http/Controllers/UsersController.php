@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * عرض جميع المستخدمين (للموظفين والإداريين فقط)
-     */
+    
     public function index()
     {
         if (Auth::user()->isEmployee()) {
@@ -25,18 +23,12 @@ class UserController extends Controller
         return view('users.index', compact('users'));
     }
 
-    /**
-     * عرض صفحة الملف الشخصي
-     */
     public function profile()
     {
         $user = Auth::user();
         return view('users.profile', compact('user'));
     }
 
-    /**
-     * السماح فقط لـ Admin بإضافة موظفين
-     */
     public function createEmployee()
     {
         if (!Auth::user()->isAdmin()) {
@@ -68,9 +60,6 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'Employee created successfully.');
     }
 
-    /**
-     * السماح فقط للموظفين بشحن رصيد العملاء بقيم موجبة
-     */
     public function chargeCredit(Request $request, User $user)
     {
         if (!Auth::user()->isEmployee()) {
@@ -87,3 +76,30 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'Credit added successfully.');
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
