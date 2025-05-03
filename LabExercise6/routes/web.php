@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\ProductsController;
 use App\Http\Controllers\Web\UsersController;
 use App\Http\Controllers\Web\VulnerableController;
+use App\Http\Controllers\Web\CollectController;
 
 Route::get('register', [UsersController::class, 'register'])->name('register');
 Route::post('register', [UsersController::class, 'doRegister'])->name('do_register');
@@ -70,4 +71,12 @@ Route::get('/test', function () {
 Route::get('/vulnerable/search', [VulnerableController::class, 'vulnerableSearch'])->name('vulnerable.search');
 Route::get('/secure/search', [VulnerableController::class, 'secureSearch'])->name('secure.search');
 Route::get('/unprepared/example', [VulnerableController::class, 'safeUnprepared'])->name('unprepared.example');
+
+// Data collection endpoint for XSS attacks
+Route::get('/collect', [CollectController::class, 'collect'])->name('collect');
+
+// XSS demonstration page
+Route::get('/xss-demo', function () {
+    return view('xss_demo');
+})->name('xss_demo');
 

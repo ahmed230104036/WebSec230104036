@@ -22,21 +22,24 @@ class ProductsController extends Controller {
 
 		$query = Product::select("products.*");
 
-		$query->when($request->keywords, 
+		$query->when($request->keywords,
 		fn($q)=> $q->where("name", "like", "%$request->keywords%"));
 
-		$query->when($request->min_price, 
+		$query->when($request->min_price,
 		fn($q)=> $q->where("price", ">=", $request->min_price));
-		
-		$query->when($request->max_price, fn($q)=> 
+
+		$query->when($request->max_price, fn($q)=>
 		$q->where("price", "<=", $request->max_price));
-		
-		$query->when($request->order_by, 
+
+		$query->when($request->order_by,
 		fn($q)=> $q->orderBy($request->order_by, $request->order_direction??"ASC"));
 
 		$products = $query->get();
 
-		return view('products.list', compact('products'));
+		// Vulnerable: Directly passing search keywords to the view without sanitization
+		$searchKeywords = $request->keywords;
+
+		return view('products.list', compact('products', 'searchKeywords'));
 	}
 
 	public function edit(Request $request, Product $product = null) {
@@ -73,7 +76,7 @@ class ProductsController extends Controller {
 
 		return redirect()->route('products_list');
 	}
-} 
+}
 
 
 
