@@ -1,5 +1,6 @@
+
 @extends('layouts.master')
-@section('title', 'Prime Numbers')
+@section('title', 'Edit Product')
 @section('content')
 
 <form action="{{route('products_save', $product->id)}}" method="post">
@@ -45,13 +46,6 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 @endsection
-
-
-
-
-
-
-
 
 
 

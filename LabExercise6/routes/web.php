@@ -3,6 +3,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\ProductsController;
 use App\Http\Controllers\Web\UsersController;
+use App\Http\Controllers\Web\VulnerableController;
 
 Route::get('register', [UsersController::class, 'register'])->name('register');
 Route::post('register', [UsersController::class, 'doRegister'])->name('do_register');
@@ -17,11 +18,11 @@ Route::get('users/delete/{user}', [UsersController::class, 'delete'])->name('use
 Route::get('users/edit_password/{user?}', [UsersController::class, 'editPassword'])->name('edit_password');
 Route::post('users/save_password/{user}', [UsersController::class, 'savePassword'])->name('save_password');
 Route::get('verify', [UsersController::class, 'verify'])->name('verify');
-Route::get('/auth/google', 
+Route::get('/auth/google',
 [UsersController::class, 'redirectToGoogle'])
 ->name('login_with_google');
 
-Route::get('/auth/google/callback', 
+Route::get('/auth/google/callback',
 [UsersController::class, 'handleGoogleCallback']);
 
 Route::get('/auth/facebook', [UsersController::class, 'redirectToFacebook'])->name('login_with_facebook');
@@ -64,4 +65,9 @@ Route::get('/prime', function () {
 Route::get('/test', function () {
     return view('test');
 });
+
+// Vulnerable routes for SQL injection demonstration
+Route::get('/vulnerable/search', [VulnerableController::class, 'vulnerableSearch'])->name('vulnerable.search');
+Route::get('/secure/search', [VulnerableController::class, 'secureSearch'])->name('secure.search');
+Route::get('/unprepared/example', [VulnerableController::class, 'safeUnprepared'])->name('unprepared.example');
 
