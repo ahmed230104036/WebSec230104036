@@ -5,6 +5,7 @@ use App\Http\Controllers\Web\ProductsController;
 use App\Http\Controllers\Web\UsersController;
 use App\Http\Controllers\Web\VulnerableController;
 use App\Http\Controllers\Web\CollectController;
+use App\Http\Controllers\Web\CryptoController;
 
 Route::get('register', [UsersController::class, 'register'])->name('register');
 Route::post('register', [UsersController::class, 'doRegister'])->name('do_register');
