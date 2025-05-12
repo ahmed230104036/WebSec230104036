@@ -81,3 +81,23 @@ Route::get('/xss-demo', function () {
     return view('xss_demo');
 })->name('xss_demo');
 
+// Crypto routes
+Route::get('/crypto', [CryptoController::class, 'index'])->name('crypto.index');
+Route::post('/crypto/encrypt', [CryptoController::class, 'encrypt'])->name('crypto.encrypt');
+Route::post('/crypto/decrypt', [CryptoController::class, 'decrypt'])->name('crypto.decrypt');
+Route::post('/crypto/hash', [CryptoController::class, 'hash'])->name('crypto.hash');
+Route::post('/crypto/generate-keypair', [CryptoController::class, 'generateKeyPair'])->name('crypto.generate-keypair');
+Route::post('/crypto/sign', [CryptoController::class, 'sign'])->name('crypto.sign');
+Route::post('/crypto/verify', [CryptoController::class, 'verify'])->name('crypto.verify');
+Route::post('/crypto/public-key-encrypt', [CryptoController::class, 'publicKeyEncrypt'])->name('crypto.public-key-encrypt');
+Route::post('/crypto/private-key-decrypt', [CryptoController::class, 'privateKeyDecrypt'])->name('crypto.private-key-decrypt');
+
+// Simple Crypto routes
+Route::get('/crypto/simple', [CryptoController::class, 'simpleIndex'])->name('crypto.simple');
+Route::post('/crypto/process', [CryptoController::class, 'processOperation'])->name('crypto.process');
+
+// Handle GET request for process route (redirect with error message)
+Route::get('/crypto/process', function() {
+    return redirect()->route('crypto.simple')->with('error', 'Please use the form to submit your request.');
+});
+
