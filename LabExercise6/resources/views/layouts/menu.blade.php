@@ -16,8 +16,8 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{route('products_list')}}">Products</a>
             </li>
-            <li class="nav-item mx-2">
-                <a class="btn btn-danger text-white px-4 py-2 shadow" href="{{route('crypto.simple')}}" style="font-weight: bold;"><i class="fas fa-lock"></i> Cryptography</a>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('crypto.simple')}}">Cryptography</a>
             </li>
             @can('show_users')
             <li class="nav-item">

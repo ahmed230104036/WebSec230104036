@@ -95,7 +95,7 @@ function toggleKeyFields() {
     if (operation === 'sign') {
         keyFields.classList.remove('d-none');
         privateKeyField.classList.remove('d-none');
-        publicKeyField.classList.remove('d-none'); 
+        publicKeyField.classList.remove('d-none');
     } else if (operation === 'verify') {
         keyFields.classList.remove('d-none');
         publicKeyField.classList.remove('d-none');
@@ -110,16 +110,15 @@ function generateKeyPair() {
     privateKeyField.value = "Generating keys...";
     publicKeyField.value = "Please wait...";
 
+    // Create form data
+    const formData = new FormData();
+    formData.append('bits', 2048);
+    formData.append('digest_alg', 'sha256');
+    formData.append('_token', '{{ csrf_token() }}');
+
     fetch('{{ route("crypto.generate-keypair") }}', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({
-            bits: 2048,
-            digest_alg: 'sha256'
-        })
+        body: formData
     })
     .then(response => response.json())
     .then(data => {
