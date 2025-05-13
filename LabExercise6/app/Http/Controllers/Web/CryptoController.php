@@ -52,7 +52,10 @@ class CryptoController extends Controller
     {
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'data' => 'required|string',
-            'operation' => 'required|in:encrypt,decrypt,hash'
+            'operation' => 'required|in:encrypt,decrypt,hash,sign,verify',
+            'private_key' => 'required_if:operation,sign',
+            'public_key' => 'required_if:operation,verify',
+            'signature' => 'required_if:operation,verify'
         ]);
 
         if ($validator->fails()) {
@@ -128,14 +131,59 @@ class CryptoController extends Controller
                     $result = $hash;
                     $result_status = 'Hashed Successfully';
                     break;
+
+                case 'sign':
+                    // Sign the data using RSA
+                    $privateKey = $request->input('private_key');
+                    $algorithm = 'sha256';
+
+                    // Create the signature
+                    $signature = null;
+                    $signResult = openssl_sign($data, $signature, $privateKey, $algorithm);
+
+                    if ($signResult === false) {
+                        throw new Exception('Signing failed: ' . openssl_error_string());
+                    }
+
+                    // Base64 encode the signature for safe display
+                    $result = base64_encode($signature);
+                    $result_status = 'Signed Successfully';
+                    break;
+
+                case 'verify':
+                    // Verify the signature using RSA
+                    $publicKey = $request->input('public_key');
+                    $signature = base64_decode($request->input('signature'));
+                    $algorithm = 'sha256';
+
+                    // Verify the signature
+                    $verifyResult = openssl_verify($data, $signature, $publicKey, $algorithm);
+
+                    if ($verifyResult === -1) {
+                        throw new Exception('Verification failed: ' . openssl_error_string());
+                    }
+
+                    $result = ($verifyResult === 1) ? 'Signature is valid' : 'Signature is invalid';
+                    $result_status = 'Verification Completed';
+                    break;
             }
 
-            return view('crypto.simple', [
+            $viewData = [
                 'data' => $data,
                 'operation' => $operation,
                 'result' => $result,
                 'result_status' => $result_status
-            ]);
+            ];
+
+            // Add RSA-specific data if applicable
+            if ($operation === 'sign') {
+                $viewData['private_key'] = $request->input('private_key');
+            } else if ($operation === 'verify') {
+                $viewData['public_key'] = $request->input('public_key');
+                $viewData['signature'] = $request->input('signature');
+            }
+
+            return view('crypto.simple', $viewData);
 
         } catch (Exception $e) {
             return redirect()->route('crypto.simple')
@@ -267,40 +315,55 @@ class CryptoController extends Controller
         }
     }
 
-    /**
-     * Generate a key pair using OpenSSL
-     */
+    
     public function generateKeyPair(Request $request)
     {
-        $request->validate([
-            'bits' => 'required|integer|min:1024|max:4096',
-            'digest_alg' => 'required|string'
+        $isAjax = $request->ajax() || $request->wantsJson();
+
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'bits' => 'required_without:ajax|integer|min:1024|max:4096',
+            'digest_alg' => 'required_without:ajax|string'
         ]);
 
-        try {
-            $bits = $request->input('bits');
-            $digestAlg = $request->input('digest_alg');
+        if ($validator->fails()) {
+            if ($isAjax) {
+                return response()->json([
+                    'success' => false,
+                    'error' => $validator->errors()->first()
+                ]);
+            } else {
+                return back()->withErrors($validator);
+            }
+        }
 
-            // Configuration for key generation
+        try {
+            $bits = $request->input('bits', 2048);
+            $digestAlg = $request->input('digest_alg', 'sha256');
+
             $config = [
                 'digest_alg' => $digestAlg,
                 'private_key_bits' => $bits,
                 'private_key_type' => OPENSSL_KEYTYPE_RSA,
             ];
 
-            // Generate the key pair
             $res = openssl_pkey_new($config);
 
             if ($res === false) {
                 throw new Exception('Key pair generation failed: ' . openssl_error_string());
             }
 
-            // Extract the private key
             openssl_pkey_export($res, $privateKey);
 
-            // Extract the public key
             $publicKeyDetails = openssl_pkey_get_details($res);
             $publicKey = $publicKeyDetails['key'];
+
+            if ($isAjax) {
+                return response()->json([
+                    'success' => true,
+                    'privateKey' => $privateKey,
+                    'publicKey' => $publicKey
+                ]);
+            }
 
             return view('crypto.keypair', [
                 'privateKey' => $privateKey,
@@ -309,13 +372,17 @@ class CryptoController extends Controller
                 'digestAlg' => $digestAlg
             ]);
         } catch (Exception $e) {
-            return back()->withErrors(['error' => $e->getMessage()]);
+            if ($isAjax) {
+                return response()->json([
+                    'success' => false,
+                    'error' => $e->getMessage()
+                ]);
+            } else {
+                return back()->withErrors(['error' => $e->getMessage()]);
+            }
         }
     }
 
-    /**
-     * Sign data using a private key
-     */
     public function sign(Request $request)
     {
         $request->validate([
@@ -329,7 +396,6 @@ class CryptoController extends Controller
             $privateKey = $request->input('private_key');
             $algorithm = $request->input('algorithm');
 
-            // Create the signature
             $signature = null;
             $result = openssl_sign($data, $signature, $privateKey, $algorithm);
 
@@ -337,7 +403,6 @@ class CryptoController extends Controller
                 throw new Exception('Signing failed: ' . openssl_error_string());
             }
 
-            // Base64 encode the signature for safe display
             $base64Signature = base64_encode($signature);
 
             return view('crypto.result', [
@@ -351,9 +416,6 @@ class CryptoController extends Controller
         }
     }
 
-    /**
-     * Verify a signature using a public key
-     */
     public function verify(Request $request)
     {
         $request->validate([
@@ -369,7 +431,6 @@ class CryptoController extends Controller
             $publicKey = $request->input('public_key');
             $algorithm = $request->input('algorithm');
 
-            // Verify the signature
             $result = openssl_verify($data, $signature, $publicKey, $algorithm);
 
             if ($result === -1) {
@@ -389,9 +450,7 @@ class CryptoController extends Controller
         }
     }
 
-    /**
-     * Encrypt data using a public key
-     */
+    
     public function publicKeyEncrypt(Request $request)
     {
         $request->validate([
@@ -403,7 +462,6 @@ class CryptoController extends Controller
             $data = $request->input('data');
             $publicKey = $request->input('public_key');
 
-            // Encrypt the data
             $encrypted = null;
             $result = openssl_public_encrypt($data, $encrypted, $publicKey);
 
@@ -411,7 +469,6 @@ class CryptoController extends Controller
                 throw new Exception('Public key encryption failed: ' . openssl_error_string());
             }
 
-            // Base64 encode for safe display
             $base64Encrypted = base64_encode($encrypted);
 
             return view('crypto.result', [
@@ -424,9 +481,7 @@ class CryptoController extends Controller
         }
     }
 
-    /**
-     * Decrypt data using a private key
-     */
+
     public function privateKeyDecrypt(Request $request)
     {
         $request->validate([
@@ -438,7 +493,6 @@ class CryptoController extends Controller
             $data = base64_decode($request->input('data'));
             $privateKey = $request->input('private_key');
 
-            // Decrypt the data
             $decrypted = null;
             $result = openssl_private_decrypt($data, $decrypted, $privateKey);
 
@@ -456,9 +510,6 @@ class CryptoController extends Controller
         }
     }
 
-    /**
-     * Helper function to pad the key to the correct length
-     */
     private function padKey($key, $cipher)
     {
         $keyLength = openssl_cipher_key_length($cipher);
