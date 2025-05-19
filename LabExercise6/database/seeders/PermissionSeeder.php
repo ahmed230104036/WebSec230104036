@@ -19,6 +19,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'add_products', 'display_name' => 'Add Products', 'guard_name' => 'web'],
             ['name' => 'edit_products', 'display_name' => 'Edit Products', 'guard_name' => 'web'],
             ['name' => 'delete_products', 'display_name' => 'Delete Products', 'guard_name' => 'web'],
+            ['name' => 'add_review', 'display_name' => 'Add Review', 'guard_name' => 'web'],
             ['name' => 'show_users', 'display_name' => 'Show Users', 'guard_name' => 'web'],
             ['name' => 'edit_users', 'display_name' => 'Edit Users', 'guard_name' => 'web'],
             ['name' => 'delete_users', 'display_name' => 'Delete Users', 'guard_name' => 'web'],

