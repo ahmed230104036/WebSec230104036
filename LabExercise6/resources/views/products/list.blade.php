@@ -126,7 +126,6 @@
                                                     @endif
                                                 @endfor
                                             </h5>
-                                            <small class="text-muted">{{ $review->created_at->format('M d, Y') }}</small>
                                         </div>
                                         <h6 class="card-subtitle mb-2 text-muted">By: {{ $review->user->name }}</h6>
                                         <p class="card-text">{{ $review->comment }}</p>
